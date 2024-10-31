@@ -11,12 +11,14 @@ mod parse_ext;
 
 type Error = Box<dyn error::Error>;
 
+type Result<T> = std::result::Result<T, Error>;
+
 struct Args {
     output: String,
 }
 
 impl Args {
-    fn parse(args: Vec<String>) -> Result<Self, Error> {
+    fn parse(args: Vec<String>) -> Result<Self> {
         if args.len() != 2 {
             eprintln!("Usage: {} <output_file>", args[0]);
             return Err(Box::from(String::from(
@@ -30,7 +32,7 @@ impl Args {
     }
 }
 
-fn main() -> Result<(), Error> {
+fn main() -> Result<()> {
     let Args { output } = Args::parse(env::args().collect::<Vec<String>>())?;
 
     let mut input = Vec::new();
